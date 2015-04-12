@@ -13,6 +13,13 @@ class ContactHelper():
         # init contact creation
         wd.find_element_by_link_text("Додати контакт").click()
         # fill contact form
+        self.fill_contact_form(contact)
+        # submit contact creation
+        wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
+        self.app.open_home_page()
+
+    def fill_contact_form(self, contact):
+        wd = self.app.wd
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").clear()
         wd.find_element_by_name("firstname").send_keys(contact.firstname)
@@ -29,16 +36,25 @@ class ContactHelper():
         wd.find_element_by_name("mobile").clear()
         wd.find_element_by_name("mobile").send_keys(contact.mobile)
         wd.find_element_by_name("bday").send_keys(contact.day)
-        if not wd.find_element_by_xpath("//div[@id='content']/form/select[2]//option[3]").is_selected(): #figure out how to make the month parameter (values "February", "3" or "Лютий" ignored)
-            wd.find_element_by_xpath("//div[@id='content']/form/select[2]//option[3]").click()
+        if not wd.find_element_by_xpath("//div[@id='content']/form/select[2]//option[3]").is_selected():
+            wd.find_element_by_xpath("//div[@id='content']/form/select[2]//option[3]").click()  #figure out how to make the month parameter (values "February", "3" or "Лютий" ignored)
         wd.find_element_by_name("byear").click()
         wd.find_element_by_name("byear").clear()
         wd.find_element_by_name("byear").send_keys(contact.year)
         wd.find_element_by_name("notes").click()
         wd.find_element_by_name("notes").clear()
         wd.find_element_by_name("notes").send_keys(contact.notes)
-        # submit contact creation
-        wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
+
+
+    def edit_first_contact(self, contact):
+        wd = self.app.wd
+        self.app.open_home_page()
+        # start editing of the first contact
+        wd.find_element_by_css_selector("img[alt=\"Редагувати\"]").click()  #поискать более надёжный способ?
+        # fill contact form
+        self.fill_contact_form(contact)
+        # save changes
+        wd.find_element_by_name("update").click()
         self.app.open_home_page()
 
 
