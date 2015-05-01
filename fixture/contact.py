@@ -36,7 +36,7 @@ class ContactHelper():
         #self.change_field_value("byear", contact.year)
         #if not wd.find_element_by_xpath("//div[@id='content']/form/select[2]//option[3]").is_selected():
             #wd.find_element_by_xpath("//div[@id='content']/form/select[2]//option[3]").click()  #figure out how to make the month parameter (values "February", "3" or "Лютий" ignored)
-        self.change_field_value("notes", contact.notes)
+
 
 
     def edit_first_contact(self, new_contact_data):
