@@ -40,13 +40,15 @@ class ContactHelper():
             #wd.find_element_by_xpath("//div[@id='content']/form/select[2]//option[3]").click()  #figure out how to make the month parameter (values "February", "3" or "Лютий" ignored)
 
 
-
     def edit_first_contact(self, new_contact_data):
+        self.edit_contact_by_index(0)
+
+    def edit_contact_by_index(self, index, new_contact_data):
         wd = self.app.wd
         self.app.open_home_page()
-        self.select_first_contact()
+        self.select_contact_by_index(index)
         # start editing of the first contact
-        wd.find_element_by_css_selector("img[alt=\"Редагувати\"]").click()  #поискать более надёжный способ?
+        wd.find_elements_by_css_selector("img[alt=\"Редагувати\"]")[index].click()  #поискать более надёжный способ?
         # fill contact form
         self.fill_contact_form(new_contact_data)
         # save changes
@@ -54,15 +56,22 @@ class ContactHelper():
         self.app.open_home_page()
         self.contact_cache = None
 
+# Seems that this method is not needed any more (after task 13)
+#    def select_first_contact(self):
+#        wd = self.app.wd
+#        wd.find_element_by_name("selected[]").click()
 
-    def select_first_contact(self):
+    def select_contact_by_index(self, index):
         wd = self.app.wd
-        wd.find_element_by_name("selected[]").click()
+        wd.find_elements_by_name("selected[]")[index].click()
 
     def delete_first_contact(self):
+        self.delete_contact_by_index(0)
+
+    def delete_contact_by_index(self, index):
         wd = self.app.wd
         self.app.open_home_page()
-        self.select_first_contact()
+        self.select_contact_by_index(index)
         # submit deletion
         wd.find_element_by_xpath("//div[@id='content']/form[@name='MainForm']/div[2]/input").click()
         # close dialog-box
