@@ -52,10 +52,7 @@ class ContactHelper():
 
     def edit_contact_by_index(self, index, new_contact_data):
         wd = self.app.wd
-        self.app.open_home_page()
-        self.select_contact_by_index(index)
-        # start editing of the first contact
-        wd.find_elements_by_css_selector('img[alt="Редагувати"]')[index].click()  # поискать более надёжный способ?
+        self.open_contact_to_edit_by_index(index)
         # fill contact form
         self.fill_contact_form(new_contact_data)
         # save changes
@@ -98,11 +95,19 @@ class ContactHelper():
             wd = self.app.wd
             self.app.open_home_page()
             self.contact_cache = []
-            i = 1
-            for element in wd.find_elements_by_name("entry"):
-                id = element.find_element_by_name("selected[]").get_attribute("value")
-                i = i+1
-                lastname = element.find_element_by_xpath("//table[@id='maintable']/tbody/tr["+str(i)+"]/td[2]").text
-                firstname = element.find_element_by_xpath("//table[@id='maintable']/tbody/tr["+str(i)+"]/td[3]").text
+            for row in wd.find_elements_by_name("entry"):
+                id = row.find_element_by_name("selected[]").get_attribute("value")
+                cells = row.find_elements_by_tag_name("td")
+                lastname = cells[1].text
+                firstname = cells[2].text
+#                lastname = row.find_element_by_xpath("//table[@id='maintable']/tbody/tr["+str(i)+"]/td[2]").text
+#                firstname = row.find_element_by_xpath("//table[@id='maintable']/tbody/tr["+str(i)+"]/td[3]").text
                 self.contact_cache.append(Contact(lastname=lastname, firstname=firstname, id=id))
         return list(self.contact_cache)
+
+    def open_contact_to_edit_by_index(self, index):
+        wd = self.app.wd
+        self.app.open_home_page()
+        row = wd.find_elements_by_name("entry")[index]
+        cell = row.find_elements_by_tag_name("td")[7]
+        cell.find_element_by_tag_name("a").click()
