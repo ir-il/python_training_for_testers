@@ -2,11 +2,11 @@
 __author__ = 'Irsen'
 from model.contact import Contact
 
+
 class ContactHelper():
 
     def __init__(self, app):
         self.app = app
-
 
     def create(self, contact):
         wd = self.app.wd
@@ -33,12 +33,19 @@ class ContactHelper():
         self.change_field_value("lastname", contact.lastname)
         self.change_field_value("title", contact.position)
         self.change_field_value("company", contact.company)
-        self.change_field_value("mobile", contact.mobile)
-        #self.change_field_value("bday", contact.day)  # разобраться, как передавать эти параметры (день, год и месяц)
-        #self.change_field_value("byear", contact.year)
-        #if not wd.find_element_by_xpath("//div[@id='content']/form/select[2]//option[3]").is_selected():
-            #wd.find_element_by_xpath("//div[@id='content']/form/select[2]//option[3]").click()  #figure out how to make the month parameter (values "February", "3" or "Лютий" ignored)
-
+        self.change_field_value("home", contact.homephone)
+        self.change_field_value("mobile", contact.mobilephone)
+        self.change_field_value("work", contact.workphone)
+        self.change_field_value("phone2", contact.secondaryphone)
+        self.change_field_value("email", contact.email)
+        self.change_field_value("email2", contact.email2)
+        self.change_field_value("email3", contact.email3)
+        self.change_field_value("notes", contact.notes)
+        # self.change_field_value("bday", contact.day)  # разобраться, как передавать эти параметры (день, год и месяц)
+        # self.change_field_value("byear", contact.year)
+        # if not wd.find_element_by_xpath("//div[@id='content']/form/select[2]//option[3]").is_selected():
+            # wd.find_element_by_xpath("//div[@id='content']/form/select[2]//option[3]").click()
+            # #figure out how to make the month parameter (values "February", "3" or "Лютий" ignored)
 
     def edit_first_contact(self):
         self.edit_contact_by_index(0)
@@ -48,7 +55,7 @@ class ContactHelper():
         self.app.open_home_page()
         self.select_contact_by_index(index)
         # start editing of the first contact
-        wd.find_elements_by_css_selector('img[alt="Редагувати"]')[index].click()  #поискать более надёжный способ?
+        wd.find_elements_by_css_selector('img[alt="Редагувати"]')[index].click()  # поискать более надёжный способ?
         # fill contact form
         self.fill_contact_form(new_contact_data)
         # save changes

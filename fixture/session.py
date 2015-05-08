@@ -31,6 +31,8 @@ class SessionHelper():
 
     def get_logged_user(self):
         wd = self.app.wd
+        # получаем имя текущего пользователя из окна браузера
+        # и избавляемся от обрамляющих его круглых скобок - (username)
         return wd.find_element_by_xpath("//div[@id='top']/form[@class='header']/b").text[1:-1]
 
     def ensure_logout(self):
